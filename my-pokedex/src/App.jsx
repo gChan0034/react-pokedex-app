@@ -1,0 +1,70 @@
+import { useEffect, useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
+
+function App() {
+  const [num, setNum] = useState(0)
+
+  useEffect(()=>{
+    const url = `https://pokeapi.co/api/v2/pokemon/${document.getElementById("user").value}`;
+
+    const fetchPokemon = () => {
+      fetch (url)
+      .then((response) =>{
+        if(!response.ok){
+          throw new Error(`This isnt working because ${response.status}`);
+        }
+        return response.json()
+      }
+    )
+    .then((json) => {
+      console.log(json.species.name)
+    })
+    .catch((error) => {
+      console.error(error.message);
+    })
+    }
+    fetchPokemon()
+  },[num])
+
+  return (
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+
+      <div className="card">
+        Current entry number is: <input id="user" type="number" defaultValue={1}/>
+        <br></br>
+        <button id="sub" onClick={() => setNum((num) => {
+          if(document.getElementById("user").value>0){
+          num = document.getElementById("user").value
+          }
+        })}>
+          Submit
+        </button>
+        <button id="rand" onClick={() => setNum((num) => {
+            num = Math.floor(Math.random()*151+1)
+            document.getElementById("user").value = num
+          })}>
+          Randomize
+        </button>
+        <p>
+          Edit <code>src/App.jsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
+  )
+}
+
+export default App
