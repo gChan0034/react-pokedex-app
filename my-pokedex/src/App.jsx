@@ -4,12 +4,15 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [num, setNum] = useState(0)
+  const [num, setNum] = useState(1)
+  const url = `https://pokeapi.co/api/v2/pokemon/${num}`;
+
 
   useEffect(()=>{
-    const url = `https://pokeapi.co/api/v2/pokemon/${document.getElementById("user").value}`;
+    fetchPokemon()
+  },[num])
 
-    const fetchPokemon = () => {
+  const fetchPokemon = () => {
       fetch (url)
       .then((response) =>{
         if(!response.ok){
@@ -24,9 +27,7 @@ function App() {
     .catch((error) => {
       console.error(error.message);
     })
-    }
-    fetchPokemon()
-  },[num])
+  }
 
   return (
     <>
@@ -46,6 +47,7 @@ function App() {
         <button id="sub" onClick={() => setNum((num) => {
           if(document.getElementById("user").value>0){
           num = document.getElementById("user").value
+          return num
           }
         })}>
           Submit
@@ -53,6 +55,7 @@ function App() {
         <button id="rand" onClick={() => setNum((num) => {
             num = Math.floor(Math.random()*151+1)
             document.getElementById("user").value = num
+            return num
           })}>
           Randomize
         </button>
