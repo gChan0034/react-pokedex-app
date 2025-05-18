@@ -4,13 +4,14 @@ import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [num, setNum] = useState(1)
-  const url = `https://pokeapi.co/api/v2/pokemon/${num}`;
-
+  const [entryNum, setEntryNum] = useState(1)
+  const url = `https://pokeapi.co/api/v2/pokemon/${entryNum}`
+  const entryNumImgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entryNum}.png`
 
   useEffect(()=>{
     fetchPokemon()
-  },[num])
+    document.querySelector("img").setAttribute('src', entryNumImgUrl)
+  },[entryNum])
 
   const fetchPokemon = () => {
       fetch (url)
@@ -32,40 +33,29 @@ function App() {
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <div>
+          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"/>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-
       <div className="card">
-        Current entry number is: <input id="user" type="number" defaultValue={1}/>
+        Current entry number is: <input id="user" type="number" defaultValue={1} min={1}/>
         <br></br>
-        <button id="sub" onClick={() => setNum((num) => {
+        <button id="sub" onClick={() => setEntryNum((entryNum) => {
           if(document.getElementById("user").value>0){
-          num = document.getElementById("user").value
-          return num
+          entryNum = document.getElementById("user").value
+          return entryNum
           }
         })}>
-          Submit
+          Seach
         </button>
-        <button id="rand" onClick={() => setNum((num) => {
-            num = Math.floor(Math.random()*151+1)
-            document.getElementById("user").value = num
-            return num
+        <button id="rand" onClick={() => setEntryNum((entryNum) => {
+            entryNum = Math.floor(Math.random()*1025+1)
+            document.getElementById("user").value = entryNum
+            return entryNum
           })}>
           Randomize
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
